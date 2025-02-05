@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#E91E63</color>
+    <color name="blue">#03A9F4</color>
+
+
+    <color name="purple_500">#6200EE</color>
+    <color name="darker_gray">#A9A9A9</color>
+    <color name="purple">#8692f7</color>
+    <color name="levender">#095AE6</color>
+
+    <color name="primary_color">#5B5DF6</color> <!-- Header and Add Button -->
+    <color name="secondary_color">#999999</color> <!-- Inactive Text -->
+    <color name="background_color">#5B5DF6</color> <!-- Background -->
+    <color name="text_color">#000000</color> <!-- Black Text -->
+
+
+    <!-- Color Options -->
+    <color name="color_option1">#5B5DF6</color> <!-- Blue -->
+    <color name="color_option2">#EF476F</color> <!-- Red -->
+    <color name="color_option3">#FFD166</color> <!-- Yellow -->
+    <color name="color_option4">#06D6A0</color> <!-- Green -->
+</resources>
