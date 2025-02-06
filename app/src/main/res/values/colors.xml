@@ -22,4 +22,8 @@
     <color name="color_option2">#EF476F</color> <!-- Red -->
     <color name="color_option3">#FFD166</color> <!-- Yellow -->
     <color name="color_option4">#06D6A0</color> <!-- Green -->
+
+    <color name="gray">#808080</color>
+    <color name="colorAccent">#FF4081</color>
+
 </resources>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/task_item_background">
+
+    <!-- Task Title and Buttons in a Horizontal LinearLayout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start|center_vertical">
+
+        <!-- Task Title -->
+        <TextView
+            android:id="@+id/task_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_weight="1" />
+
+        <!-- Update Button -->
+        <Button
+            android:id="@+id/update_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:textColor="@android:color/white"
+            android:background="@color/colorAccent"
+            android:layout_marginStart="8dp"/>
+
+        <!-- Delete Button -->
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:textColor="@android:color/white"
+            android:background="@android:color/holo_red_dark"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+    <!-- Initially hidden EditTexts for title, description, start date, and end date -->
+    <EditText
+        android:id="@+id/edit_task_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Title"
+        android:visibility="gone"
+        android:textSize="18sp"/>
+
+    <EditText
+        android:id="@+id/edit_task_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:visibility="gone"
+        android:textSize="14sp"/>
+
+    <EditText
+        android:id="@+id/edit_task_start_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Start Date"
+        android:visibility="gone"
+        android:textSize="12sp"/>
+
+    <EditText
+        android:id="@+id/edit_task_end_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="End Date"
+        android:visibility="gone"
+        android:textSize="12sp"/>
+
+    <!-- Save Updated Task Button -->
+    <Button
+        android:id="@+id/save_update_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:visibility="gone"
+        android:textColor="@android:color/white"
+        android:background="@color/colorAccent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Initially hidden TextViews for description, start date, and end date -->
+    <TextView
+        android:id="@+id/task_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/task_start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/task_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:visibility="gone"/>
+
+</LinearLayout>

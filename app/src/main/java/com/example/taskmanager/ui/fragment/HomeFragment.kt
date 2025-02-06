@@ -5,56 +5,93 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.taskmanager.R
+import com.example.taskmanager.model.Task
+import com.example.taskmanager.adapter.TaskAdapter
+import com.google.firebase.database.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var database: DatabaseReference
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var taskAdapter: TaskAdapter
+    private lateinit var emptyStateMessage: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        recyclerView = view.findViewById(R.id.task_list_recycler_view)
+        emptyStateMessage = view.findViewById(R.id.empty_state_message)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        taskAdapter = TaskAdapter(mutableListOf(), requireContext(), ::onUpdateClick, ::onDeleteClick)
+        recyclerView.adapter = taskAdapter
+
+        database = FirebaseDatabase.getInstance().getReference("Tasks")
+        fetchTasks()
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun fetchTasks() {
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val taskList = mutableListOf<Task>()
+                for (taskSnapshot in snapshot.children) {
+                    val task = taskSnapshot.getValue(Task::class.java)
+                    task?.let {
+                        taskList.add(it.copy(id = taskSnapshot.key ?: ""))
+                    }
                 }
+                taskAdapter.updateTasks(taskList)
+                emptyStateMessage.visibility = if (taskList.isEmpty()) View.VISIBLE else View.GONE
             }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+    }
+
+    // Update task function to handle updates based on updated data passed from TaskAdapter
+    private fun onUpdateClick(task: Task, updatedTitle: String, updatedDescription: String, updatedStartDate: String, updatedEndDate: String) {
+        // Update task in Firebase with the new values
+        val taskRef = database.child(task.id) // Firebase key is used here
+        val updatedTask = task.copy(
+            title = updatedTitle,
+            description = updatedDescription,
+            startDate = updatedStartDate,
+            endDate = updatedEndDate
+        )
+
+        taskRef.setValue(updatedTask).addOnCompleteListener {
+            if (it.isSuccessful) {
+                Toast.makeText(requireContext(), "Task updated successfully!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Failed to update task.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // Delete task function
+    private fun onDeleteClick(task: Task) {
+        // Handle delete logic
+        Toast.makeText(requireContext(), "Deleting task: ${task.title}", Toast.LENGTH_SHORT).show()
+
+        // Delete task from Firebase
+        val taskRef = database.child(task.id) // Firebase key is used here
+        taskRef.removeValue().addOnCompleteListener {
+            if (it.isSuccessful) {
+                Toast.makeText(requireContext(), "Task deleted successfully!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Failed to delete task.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
